@@ -19,3 +19,27 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.flex{
+  display: flex;
+}
+
+div.Column{
+  text-align: center;
+  flex-basis: 25%;
+  height: 100vh;
+  border: 0.25em black solid;
+}
+
+.Column .cardholder {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.card {
+  flex-basis: 90%;
+  height: 120px;
+  background: blueviolet;
+}

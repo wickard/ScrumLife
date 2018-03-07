@@ -5,6 +5,7 @@ import {Router} from 'react-router-dom'
 import history from './history'
 import store from './store'
 import App from './app'
+import style from '../node_modules/dragula/dragula'
 
 // establishes socket connection
 import './socket'
