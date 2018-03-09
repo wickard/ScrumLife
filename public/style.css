@@ -33,13 +33,35 @@ div.Column{
 
 .Column .cardholder {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.Column .goal-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }
 
 .card {
-  flex-basis: 90%;
-  height: 120px;
-  background: blueviolet;
+  height: 40px;
+  margin: 0.25em;
+}
+
+.blue {
+  background: blue;
+}
+
+.black {
+  background: black;
+}
+
+.pink {
+  background: pink;
+}
+
+.orange {
+  background: orange;
 }
