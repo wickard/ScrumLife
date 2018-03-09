@@ -7,8 +7,6 @@ import store from './store'
 import App from './app'
 import style from '../node_modules/react-dragula/dist/dragula.css'
 import drake from './drake'
-// establishes socket connection
-import './socket'
 
 ReactDOM.render(
   <Provider store={store}>
