@@ -36,7 +36,7 @@ const mapDispatch = (dispatch) => {
   // watchBoardAddEvent(dispatch)
   return {
      submitHandler(name, userId) {
-      addBoardThunk(name, userId)
+      dispatch(addBoardThunk(name, userId))
     },
     getUserBoards(id){
       dispatch(initBoardsThunk(id))

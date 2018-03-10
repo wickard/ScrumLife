@@ -7,5 +7,6 @@ router.post('/', (req, res, next) => {
   .then(board => {
     User.findById(req.body.userId)
     .then(user => user.addBoard(board))
+    .then(() => res.json(board))
   })
 })
