@@ -10,7 +10,7 @@ const INIT_TASKS = 'init tasks'
  * ACTION CREATORS
  */
 export const addNewTask = (task) => ({type: ADD_NEW_TASK, task})
-export const removeTask = (id) => ({type: REMOVE_NEW_TASK, id})
+export const removeNewTask = (task) => ({type: REMOVE_NEW_TASK, task})
 export const initTasks = (tasks) => ({type: INIT_TASKS, tasks})
 
 
@@ -25,20 +25,18 @@ export default function (state = [], action) {
     case ADD_NEW_TASK:
       return [...state, action.task]
     case REMOVE_NEW_TASK:
-      return state.filter(task => task.id !== action.id)
+      return state.filter(task => task.id !== action.task.id)
     default:
       return state
   }
 }
 
 export function addTaskThunk(name) {
-  return dispatch => {
     //find the id of the thing your about to push into firebase, and set it
     const id = firebase.ref().child('newTasks').push().key
     firebase.ref(`/joshboard/newTasks/${id}`).set({
       name, id
     })
-  }
 }
 
 export function initNewTasksThunk() {
@@ -69,6 +67,6 @@ export function removeTaskThunk(id) {
 export function watchTaskRemovedEvent(dispatch) {
   firebase.ref('/joshboard/newTasks').on('child_removed', (snap) => {
     const task = snap.val()
-    dispatch(removeTask(task));
+    dispatch(removeNewTask(task));
   });
 }

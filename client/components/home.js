@@ -2,30 +2,25 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import firebase from '../../firebase'
 import { Form, Button } from 'semantic-ui-react'
-import { addBoardThunk, addTaskThunk, initTasksThunk, watchTaskAddedEvent } from '../store'
+import { addBoardThunk, watchBoardAddEvent } from '../store'
 
 export class Home extends Component {
 
   componentDidMount() {
-    this.props.onGetTasks();
+
   }
 
   render(){
     return (
       <div>
-      <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value)} size='small'>
-      <Form.Group widths='equal'>
-        <Form.TextArea control='input' placeholder='New Task Board' name="name" />
-      </Form.Group>
-      <Button type='submit'>Add Task</Button>
-    </Form>
-    <Form onSubmit={(e) => this.props.submitTask(e.target.name.value)} size='small'>
-      <Form.Group widths='equal'>
-        <Form.TextArea control='input' placeholder='New Task' name="name" />
-      </Form.Group>
-      <Button type='submit'>Add Task</Button>
-    </Form>
-      {this.props.newTasks.map(task => <h1>{task.name}</h1>)}
+        <h1>Welcome {this.props.user.email}</h1>
+        <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value)} size='small'>
+          <Form.Group >
+            <Form.TextArea control='input' placeholder='New Task Board' name="name" />
+          </Form.Group>
+          <Button type='submit'>Create New Board</Button>
+        </Form>
+        <h1>{this.props.board.name}</h1>
       </div>
     )
   }
@@ -33,19 +28,14 @@ export class Home extends Component {
 }
 
 const mapProps = (state) => ({
-  newTasks: state.newTasks
+  user: state.user,
+  board: state.board
 })
 const mapDispatch = (dispatch) => {
-  watchTaskAddedEvent(dispatch)
+  watchBoardAddEvent(dispatch)
   return {
     submitHandler(name) {
-      dispatch(addBoardThunk(name))
-    },
-    submitTask(name){
-      dispatch(addTaskThunk(name))
-    },
-    onGetTasks(){
-      dispatch(initTasksThunk())
+     addBoardThunk(name)
     }
   }
 }

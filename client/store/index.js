@@ -19,3 +19,5 @@ export default store
 export * from './user'
 export * from './newTasks'
 export * from './board'
+export * from './done'
+export * from './inProgress'

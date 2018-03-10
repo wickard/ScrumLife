@@ -21,20 +21,17 @@ export default function (state = '', action) {
   }
 }
 
-// export function watchBoardAddEvent(dispatch) {
-//   firebase.ref('/').on('child_added', (snap) => {
-//     dispatch(addBoard(snap.val()));
-//   });
-// }
+export function watchBoardAddEvent(dispatch) {
+  firebase.ref('/').on('child_added', (snap) => {
+    dispatch(addBoard(snap.val()));
+  });
+}
 
 
 export function addBoardThunk(name) {
-  return dispatch => {
-    firebase.ref('/').push({
-      name
-    })
-    .then(() => {
-      dispatch(addBoard({ name }));
-    })
-  }
+  const id = firebase.ref().push().key
+  firebase.ref(`/${id}`).set({
+    name, id
+  })
 }
+
