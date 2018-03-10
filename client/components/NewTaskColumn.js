@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import dragula from 'react-dragula'
 import  drake  from '../drake'
 import { connect} from 'react-redux'
-import { removeTask } from '../store'
+import { removeTaskThunk } from '../store'
 import Card from './card'
 
 const mapProps = (state) => {
@@ -11,8 +11,8 @@ const mapProps = (state) => {
   }
 }
 const mapDispatch = (dispatch) => ({
-  removeTask(task) {
-    dispatch(removeTask(task))
+  removeTask(id) {
+    removeTaskThunk(id)
   }
 })
 
@@ -31,8 +31,8 @@ export default class NewTaskColumn extends Component {
             <div id="New-Task" className="cardholder" ref={this.dragulaDecorator}>
             {this.props.newTasks.map((task, idx) => {
               return (
-                <Card className={task} key={idx} task={task} removeTask={() => this.props.removeTask(task)}>
-                  {task}
+                <Card className={task.name} key={idx} task={task.name} removeTask={() => this.props.removeTask(task.id)}>
+                  {task.name}
                 </Card>
               )
             }) }

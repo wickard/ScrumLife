@@ -7,6 +7,7 @@ import store from './store'
 import App from './app'
 import style from '../node_modules/react-dragula/dist/dragula.css'
 import drake from './drake'
+import firebase from '../firebase'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,6 +17,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app')
 )
+
+firebase.ref('/josh')
 
 drake.on('drop', (el, target, source) => {
   store.dispatch({type: target.id, task: el.id})

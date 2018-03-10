@@ -4,19 +4,16 @@ import Dragula from 'react-dragula'
 import NewTaskColumn from './newTaskColumn'
 import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
-import { addNewTask } from '../store'
 import AddTaskModal from './addTask'
-import Card from './card'
+import { addBoardThunk, addTaskThunk, initNewTasksThunk, watchTaskAddedEvent, addNewTask, watchTaskRemovedEvent } from '../store'
 /**
  * COMPONENT
  */
 export class UserHome extends Component {
-  // dragulaDecorator = (componentBackingInstance) => {
-  //   if (componentBackingInstance) {
-  //     let options = { };
-  //     Dragula([componentBackingInstance, ...document.querySelectorAll('.cardholder')], options);
-  //   }
-  // };
+  componentDidMount() {
+    this.props.onGetTasks();
+  }
+
   dragulaGoalDecorator = (componentBackingInstance) => {
     if (componentBackingInstance) {
       let options = { };
@@ -58,20 +55,24 @@ export class UserHome extends Component {
 /**
  * CONTAINER
  */
-const mapState = (state) => {
+const mapProps = (state) => ({
+  newTasks: state.newTasks
+})
+const mapDispatch = (dispatch) => {
+  watchTaskAddedEvent(dispatch)
+  watchTaskRemovedEvent(dispatch)
   return {
-    newTasks: state.newTasks
+    submitHandler(name) {
+      dispatch(addBoardThunk(name))
+    },
+    submitTask(name){
+      dispatch(addTaskThunk(name))
+    },
+    onGetTasks(){
+      dispatch(initNewTasksThunk())
+    }
   }
 }
 
-const mapDispatch = (dispatch) => ({
-  addTask(task) {
-    dispatch(addNewTask(task))
-  },
-  removeTask(task) {
-    dispatch(removeTask(task))
-  }
-})
-
-export default connect(mapState, mapDispatch)(UserHome)
+export default connect(mapProps, mapDispatch)(UserHome)
 
