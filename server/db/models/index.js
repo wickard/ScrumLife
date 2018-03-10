@@ -1,7 +1,8 @@
 const User = require('./user')
 const Board = require('./boards')
 
-User.hasMany(Board)
+User.belongsToMany(Board, { through: 'UserBoard' });
+Board.belongsToMany(User, { through: 'UserBoard' });
 
 /**
  * If we had any associations to make, this would be a great place to put them!

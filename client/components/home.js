@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import firebase from '../../firebase'
 import { Form, Button } from 'semantic-ui-react'
-import { addBoardThunk, watchBoardAddEvent } from '../store'
+import { addBoardThunk, watchBoardAddEvent, initBoardsThunk, setBoard } from '../store'
 
 export class Home extends Component {
 
   componentDidMount() {
-
+    this.props.getUserBoards(this.props.user.id)
   }
 
   render(){
@@ -20,7 +20,7 @@ export class Home extends Component {
           </Form.Group>
           <Button type='submit'>Create New Board</Button>
         </Form>
-        <h1>{this.props.board.name}</h1>
+        {this.props.userBoards.map(board => <h1 onClick={() => this.props.setClick(board)} key={board.tag}>{board.name}</h1>)}
       </div>
     )
   }
@@ -29,13 +29,20 @@ export class Home extends Component {
 
 const mapProps = (state) => ({
   user: state.user,
-  board: state.board
+  board: state.board,
+  userBoards: state.allBoards
 })
 const mapDispatch = (dispatch) => {
-  watchBoardAddEvent(dispatch)
+  // watchBoardAddEvent(dispatch)
   return {
-    submitHandler(name, userId) {
-     addBoardThunk(name, userId)
+     submitHandler(name, userId) {
+      addBoardThunk(name, userId)
+    },
+    getUserBoards(id){
+      dispatch(initBoardsThunk(id))
+    },
+    setClick(board){
+      dispatch(setBoard(board))
     }
   }
 }
