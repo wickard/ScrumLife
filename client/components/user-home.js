@@ -4,41 +4,21 @@ import Dragula from 'react-dragula'
 import NewTaskColumn from './newTaskColumn'
 import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
-import { addNewTask } from '../store'
 import AddTaskModal from './addTask'
-import Card from './card'
+import { addBoardThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk } from '../store'
 /**
  * COMPONENT
  */
 export class UserHome extends Component {
-  // dragulaDecorator = (componentBackingInstance) => {
-  //   if (componentBackingInstance) {
-  //     let options = { };
-  //     Dragula([componentBackingInstance, ...document.querySelectorAll('.cardholder')], options);
-  //   }
-  // };
-  dragulaGoalDecorator = (componentBackingInstance) => {
-    if (componentBackingInstance) {
-      let options = { };
-      Dragula([componentBackingInstance], options);
-    }
-  };
+  componentDidMount() {
+    this.props.onGetTasks();
+  }
   render() {
-    // const drake = Dragula()
-    // drake.containers.push(document.getElementById('home'))
-    // console.log(drake)
+
     return (
       <div>
-        <AddTaskModal submitHandler={this.props.addTask} open={false} />
+        <AddTaskModal submitHandler={this.props.submitTask} open={false} />
         <div className="flex" id="home">
-          <div className="Column"> <h1>Goals</h1> <hr width="70%" />
-            <div className="goal-container" ref={this.dragulaGoalDecorator}>
-              <div className="card pink"></div>
-              <div className="card black"></div>
-              <div className="card blue"></div>
-              <div className="card orange"></div>
-            </div>
-          </div>
           <div className="Column"> <h1>Not Started</h1> <hr width="70%" />
             <NewTaskColumn />
           </div>
@@ -58,20 +38,26 @@ export class UserHome extends Component {
 /**
  * CONTAINER
  */
-const mapState = (state) => {
+const mapProps = (state) => ({
+  newTasks: state.newTasks,
+  progressTasks: state.progressTasks,
+  doneTasks: state.doneTasks
+})
+const mapDispatch = (dispatch) => {
   return {
-    newTasks: state.newTasks
+    submitHandler(name) {
+      dispatch(addBoardThunk(name))
+    },
+    submitTask(name){
+      addTaskThunk(name)
+    },
+    onGetTasks(){
+      dispatch(initNewTasksThunk())
+      dispatch(initDoneTasksThunk())
+      dispatch(initProgressTasksThunk())
+    }
   }
 }
 
-const mapDispatch = (dispatch) => ({
-  addTask(task) {
-    dispatch(addNewTask(task))
-  },
-  removeTask(task) {
-    dispatch(removeTask(task))
-  }
-})
-
-export default connect(mapState, mapDispatch)(UserHome)
+export default connect(mapProps, mapDispatch)(UserHome)
 
