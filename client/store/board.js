@@ -1,4 +1,5 @@
 import firebase from '../../firebase'
+import axios from 'axios'
 /**
  * ACTION TYPES
  */
@@ -28,10 +29,11 @@ export function watchBoardAddEvent(dispatch) {
 }
 
 
-export function addBoardThunk(name) {
+export function addBoardThunk(name, userId) {
   const id = firebase.ref().push().key
   firebase.ref(`/${id}`).set({
     name, id
   })
+  axios.post('/api/boards', {tag: id, name, userId})
 }
 

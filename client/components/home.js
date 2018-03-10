@@ -14,7 +14,7 @@ export class Home extends Component {
     return (
       <div>
         <h1>Welcome {this.props.user.email}</h1>
-        <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value)} size='small'>
+        <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value, this.props.user.id)} size='small'>
           <Form.Group >
             <Form.TextArea control='input' placeholder='New Task Board' name="name" />
           </Form.Group>
@@ -34,8 +34,8 @@ const mapProps = (state) => ({
 const mapDispatch = (dispatch) => {
   watchBoardAddEvent(dispatch)
   return {
-    submitHandler(name) {
-     addBoardThunk(name)
+    submitHandler(name, userId) {
+     addBoardThunk(name, userId)
     }
   }
 }
