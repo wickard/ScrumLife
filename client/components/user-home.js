@@ -5,17 +5,20 @@ import NewTaskColumn from './newTaskColumn'
 import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
 import AddTaskModal from './addTask'
-import { addBoardThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk } from '../store'
+import { addBoardThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk, setBoard } from '../store'
 import drake from '../drake'
+import history from '../history'
 /**
  * COMPONENT
  */
 export class UserHome extends Component {
+  componentWillMount() {
+    this.props.initBoard(this.props.match.params.id)
+  }
   componentDidMount() {
     this.props.onGetTasks(this.props.board);
   }
   render() {
-
     return (
       <div>
         <AddTaskModal board={this.props.board} submitHandler={this.props.submitTask} open={false} />
@@ -47,8 +50,8 @@ const mapProps = (state) => ({
 })
 const mapDispatch = (dispatch) => {
   return {
-    submitHandler(name) {
-      dispatch(addBoardThunk(name))
+    initBoard(id) {
+      dispatch(setBoard(id))
     },
     submitTask(board, name){
       addTaskThunk(board, name)

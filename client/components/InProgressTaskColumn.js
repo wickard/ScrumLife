@@ -7,15 +7,16 @@ import { removeProgressTaskThunk, watchProgressTaskAddedEvent, watchProgressTask
 
 const mapProps = (state) => {
   return {
-    tasks: state.inProgress
+    tasks: state.inProgress,
+    board: state.board
   }
 }
 const mapDispatch = (dispatch, ownProps) => {
   watchProgressTaskAddedEvent(ownProps.board, dispatch)
   watchProgressTaskRemovedEvent(ownProps.board, dispatch)
   return {
-    removeTask(task) {
-      removeProgressTaskThunk(task)
+    removeTask(board, task) {
+      removeProgressTaskThunk(board, task)
     }
   }
 }
@@ -34,7 +35,7 @@ export default class NewTaskColumn extends Component {
             <div id="Progress-Task" className="cardholder" ref={this.dragulaDecorator}>
             {this.props.tasks.map((task, idx) => {
               return (
-                <Card className={task.name} key={task.id} id={task.id} task={task.name} removeTask={() => this.props.removeTask(task.id)}>
+                <Card className={task.name} key={task.id} id={task.id} task={task.name} removeTask={() => this.props.removeTask(this.props.board, task.id)}>
                   {task.name}
                 </Card>
               )
