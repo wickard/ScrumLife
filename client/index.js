@@ -41,7 +41,6 @@ drake.on('drop', (el, target, source) => {
       el.remove()
       break
     case 'Progress-Task':
-      console.log(el.getAttribute('task'))
       addProgressTaskThunk(el.getAttribute('task'))
       removeCard(source.id, el.id)
       el.remove()
