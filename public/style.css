@@ -134,10 +134,13 @@ input {
 }
 
 .dash-div {
+  display: flex;
+  flex-direction: column;
   flex-basis: 45%;
   margin-right: 1em;
 }
 
 .dash-div button.ui.button {
   margin-bottom: 1em;
+  width: 40%;
 }

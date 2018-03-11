@@ -8,8 +8,9 @@ import inProgress from './inProgress'
 import done from './done'
 import board from './board'
 import allBoards from './allboard'
+import boardMembers from './boardMembers'
 
-const reducer = combineReducers({user, board, newTasks, inProgress, done, allBoards})
+const reducer = combineReducers({user, board, newTasks, inProgress, done, allBoards, boardMembers})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -23,3 +24,4 @@ export * from './board'
 export * from './done'
 export * from './inProgress'
 export * from './allboard'
+export * from './boardMembers'

@@ -19,3 +19,16 @@ router.get('/:id/boards', (req, res, next) => {
   .then(user => user.getBoards())
   .then(boards => res.json(boards))
 })
+
+//link up with a current board
+
+router.post('/:id/boards', (req, res, next) => {
+  User.findById(req.params.id)
+  .then(user => {
+    Board.findOne({where: {tag: req.body.tag}})
+    .then(board => {
+      user.addBoard(board)
+      res.json(board)
+    })
+  })
+})

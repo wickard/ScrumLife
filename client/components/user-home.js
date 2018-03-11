@@ -5,7 +5,7 @@ import NewTaskColumn from './newTaskColumn'
 import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
 import AddTaskModal from './addTask'
-import { addBoardThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk, setBoard } from '../store'
+import { initMembersThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk, setBoard, watchMemberAdd } from '../store'
 import drake from '../drake'
 import history from '../history'
 /**
@@ -32,6 +32,11 @@ export class UserHome extends Component {
           <div className="Column"> <h1>Done</h1> <hr width="70%" />
           <CompleteTaskColumn board={this.props.board} />
           </div>
+          <div className="Column">
+            <h1> Users </h1>
+            <hr width="70%" />
+            {this.props.members.map(member => <h1 key={member}>{member}</h1>)}
+          </div>
         </div>
       </div>
     )
@@ -43,15 +48,18 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapProps = (state) => ({
+  members: state.boardMembers,
   board: state.board,
   newTasks: state.newTasks,
   progressTasks: state.progressTasks,
   doneTasks: state.doneTasks
 })
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, ownProps) => {
+  watchMemberAdd(ownProps.match.params.id, dispatch)
   return {
     initBoard(id) {
       dispatch(setBoard(id))
+      dispatch(initMembersThunk(id))
     },
     submitTask(board, name){
       addTaskThunk(board, name)
