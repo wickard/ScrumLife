@@ -38,19 +38,19 @@ export function addProgressTaskThunk(board, name) {
     })
 }
 
-export function initProgressTasksThunk(board) {
-  return dispatch => {
-    const tasks = [];
-    console.log('firing init')
-    firebase.ref(`/${board}/progressTask`).once('value', snap => {
-      snap.forEach(data => {
-        let task = data.val();
-        tasks.push(task)
+  export function initProgressTasksThunk(board) {
+    return dispatch => {
+      const tasks = [];
+      console.log('firing init')
+      firebase.ref(`/${board}/progressTask`).once('value', snap => {
+        snap.forEach(data => {
+          let task = data.val();
+          tasks.push(task)
+        })
       })
-    })
-    .then(() => dispatch(initProgressTasks(tasks)))
+      .then(() => dispatch(initProgressTasks(tasks)))
+    }
   }
-}
 
 export function watchProgressTaskAddedEvent(board, dispatch) {
   firebase.ref(`/${board}/progressTask`).on('child_added', (snap) => {

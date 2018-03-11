@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import firebase from '../../firebase'
 import { Form, Button } from 'semantic-ui-react'
-import { addBoardThunk, watchBoardAddEvent, initBoardsThunk, setBoard } from '../store'
+import { addBoardThunk, watchBoardAddEvent, initBoardsThunk, setBoard, joinBoardThunk, addMemberThunk, addMember } from '../store'
 import history from '../history'
 import { Link } from 'react-router-dom'
 
@@ -25,13 +25,13 @@ export class Home extends Component {
         </div>
         <div className="flex">
           <div className="dash-div1">
-            <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value, this.props.user.id)} size='small'>
+            <Form onSubmit={(e, data) => this.props.submitHandler(e.target.name.value, this.props.user.id, this.props.user.email)} size='small'>
               <Form.Group >
                 <Form.Input control='input' placeholder='New Task Board' name="name" />
                 <Button type='submit'>Create New Board</Button>
               </Form.Group>
             </Form>
-            <Form onSubmit={(e, data) => this.props.joinHandler(e.target.joinName.value, this.props.user.id)} size='small'>
+            <Form onSubmit={(e, data) => this.props.joinHandler(e.target.joinName.value, this.props.user.id, this.props.user.email)} size='small'>
               <Form.Group >
                   <Form.Input control='input' placeholder='Join Board' name="joinName" />
                   <Button type='submit'>Join Board</Button>
@@ -39,7 +39,7 @@ export class Home extends Component {
               </Form>
             </div>
             <div className="dash-div">
-              {this.props.userBoards.map(board => <Link key={board.tag} to={`/board/${board.tag}`}><Button>{board.name}</Button></Link>)}
+              {this.props.userBoards.map(board => <div key={board.tag}><Link  to={`/board/${board.tag}`}><Button>{board.name}</Button></Link> <span>id: {board.tag} </span> </div>)}
             </div>
         </div>
       </div>
@@ -55,11 +55,11 @@ const mapProps = (state) => ({
 })
 const mapDispatch = (dispatch) => {
   return {
-    submitHandler(name, userId) {
-      dispatch(addBoardThunk(name, userId))
+    submitHandler(name, userId, email) {
+      dispatch(addBoardThunk(name, userId, email))
     },
-    joinHandler(tag, userId){
-      dispatch(joinBoardThunk(tag, userId))
+    joinHandler(tag, userId, email){
+      dispatch(joinBoardThunk(tag, userId, email))
     },
     getUserBoards(id){
       dispatch(initBoardsThunk(id))

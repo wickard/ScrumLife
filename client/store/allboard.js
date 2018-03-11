@@ -33,22 +33,24 @@ export function initBoardsThunk(id){
   .then(boards => dispatch(initBoards(boards)))
 }
 
-// export function watchBoardAddEvent(dispatch) {
-//   console.log('firing')
-//   firebase.ref('/').on('child_added', (snap) => {
-//     dispatch(addBoard(snap.val()));
-//   });
-// }
-
-
-export function addBoardThunk(name, userId) {
+export function addBoardThunk(name, userId, email) {
     return dispatch => {
-      const id = firebase.ref().push().key
+    const id = firebase.ref().push().key
     firebase.ref(`/${id}`).set({
       name, id
     })
+    firebase.ref(`/${id}/members`).push(email)
     axios.post('/api/boards', {tag: id, name, userId})
     .then(res => res.data)
     .then(board => dispatch(addBoard(board)))
+  }
+}
+
+export function joinBoardThunk(tag, userId, email) {
+  return dispatch => {
+  firebase.ref(`/${tag}/members`).push(email)
+  axios.post(`/api/users/${userId}/boards`, {tag})
+  .then(res => res.data)
+  .then(board => dispatch(addBoard(board)))
   }
 }
