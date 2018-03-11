@@ -9,11 +9,8 @@ const addTaskModal = (props) => (
     <Modal.Header>Add New Task!</Modal.Header>
     <Modal.Content>
     <Form onSubmit={(e, data) => props.submitHandler(props.board, e.target.name.value)} size='small'>
-        <Form.Group widths='equal'>
-          <Form.TextArea control='input' placeholder='New Task' name="name" />
-          <select label='Type' placeholder='Exercise' name="type" >
-            <option value="exercise">exercise</option>
-          </select>
+        <Form.Group>
+          <Form.TextArea className="task-field" fluid control='input' placeholder='New Task' name="name"  />
         </Form.Group>
         <Button type='submit'>Add Task</Button>
       </Form>

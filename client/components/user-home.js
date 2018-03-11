@@ -5,7 +5,7 @@ import NewTaskColumn from './newTaskColumn'
 import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
 import AddTaskModal from './addTask'
-import { initMembersThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk, setBoard, watchMemberAdd } from '../store'
+import { initMembersThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk, setBoard, watchMemberAdd, initTickerTasksThunk, watchTickerTaskAddedEvent } from '../store'
 import drake from '../drake'
 import history from '../history'
 /**
@@ -18,6 +18,11 @@ export class UserHome extends Component {
   componentDidMount() {
     this.props.onGetTasks(this.props.board);
   }
+
+  count(email){
+    return this.props.ticker.filter(task => task.email === email).length
+  }
+
   render() {
     return (
       <div>
@@ -33,9 +38,16 @@ export class UserHome extends Component {
           <CompleteTaskColumn board={this.props.board} />
           </div>
           <div className="Column">
-            <h1> Users </h1>
-            <hr width="70%" />
-            {this.props.members.map(member => <h1 key={member}>{member}</h1>)}
+            <div id="ticker">
+              <h1> Task Ticker </h1>
+              <hr width="70%" />
+              {this.props.ticker.slice(-4).map((item, idx) => <h5 key={idx}>{item.task} completed by {item.email} </h5>)}
+            </div>
+            <div id="scoreBoard">
+              <h1> Score Board </h1>
+              <hr width="70%" />
+              {this.props.members.map(member => <h5 key={member}>{member} {this.count(member)} </h5>)}
+            </div>
           </div>
         </div>
       </div>
@@ -48,6 +60,7 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapProps = (state) => ({
+  ticker: state.ticker,
   members: state.boardMembers,
   board: state.board,
   newTasks: state.newTasks,
@@ -56,10 +69,12 @@ const mapProps = (state) => ({
 })
 const mapDispatch = (dispatch, ownProps) => {
   watchMemberAdd(ownProps.match.params.id, dispatch)
+  watchTickerTaskAddedEvent(ownProps.match.params.id, dispatch)
   return {
     initBoard(id) {
       dispatch(setBoard(id))
       dispatch(initMembersThunk(id))
+      dispatch(initTickerTasksThunk(id))
     },
     submitTask(board, name){
       addTaskThunk(board, name)

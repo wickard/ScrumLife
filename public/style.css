@@ -52,24 +52,9 @@ div.Column{
 }
 
 .card {
-  height: 40px;
-  margin: 0.25em;
-}
-
-.blue {
-  background: blue;
-}
-
-.black {
-  background: black;
-}
-
-.pink {
-  background: pink;
-}
-
-.orange {
-  background: orange;
+  width: 85%;
+  margin: 0.75em;
+  background: rgba(150, 168, 184, 0.523);
 }
 
 #authContainer {
@@ -143,4 +128,31 @@ input {
 .dash-div button.ui.button {
   margin-bottom: 1em;
   width: 40%;
+}
+
+.task-field {
+  width: 80%;
+}
+
+#cardTask {
+  font-size: 1.5em;
+}
+
+div.ui.selection.dropdown {
+  height: 40px;
+  margin-top: -0.5em;
+  margin-bottom: 0.5em;
+}
+
+div.text {
+  margin-top: -1em;
+}
+
+h5 {
+  color: black;
+  font-family: 'Permanent Marker', cursive;
+}
+
+#ticker {
+  margin-bottom: 0.5em;
 }

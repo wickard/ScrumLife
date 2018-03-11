@@ -8,7 +8,8 @@ import Card from './card'
 const mapProps = (state) => {
   return {
     newTasks: state.newTasks,
-    board: state.board
+    board: state.board,
+    members: state.boardMembers
   }
 }
 const mapDispatch = (dispatch, ownProps) => {
@@ -36,7 +37,7 @@ export default class NewTaskColumn extends Component {
             <div id="New-Task" className="cardholder" ref={this.dragulaDecorator}>
             {this.props.newTasks.map((task) => {
               return (
-                <Card className={task.name} key={task.id} id={task.id} task={task.name} removeTask={() => this.props.removeTask(this.props.board, task.id)}>
+                <Card board={this.props.board} members={this.props.members} className={task.name} key={task.id} id={task.id} task={task.name} removeTask={() => this.props.removeTask(this.props.board, task.id)}>
                   {task.name}
                 </Card>
               )
