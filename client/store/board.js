@@ -13,7 +13,7 @@ export const setBoard = (board) => ({type: SET_BOARD, board})
 /**
  * REDUCER
  */
-export default function (state = {}, action) {
+export default function (state = '', action) {
   switch (action.type) {
     case SET_BOARD:
       return action.board

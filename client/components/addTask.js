@@ -8,7 +8,7 @@ const addTaskModal = (props) => (
   <Modal closeIcon size="tiny" trigger={<Button>Add New Task</Button>}>
     <Modal.Header>Add New Task!</Modal.Header>
     <Modal.Content>
-    <Form onSubmit={(e, data) => props.submitHandler(e.target.name.value)} size='small'>
+    <Form onSubmit={(e, data) => props.submitHandler(props.board, e.target.name.value)} size='small'>
         <Form.Group widths='equal'>
           <Form.TextArea control='input' placeholder='New Task' name="name" />
           <select label='Type' placeholder='Exercise' name="type" >

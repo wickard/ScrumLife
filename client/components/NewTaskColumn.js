@@ -10,9 +10,9 @@ const mapProps = (state) => {
     newTasks: state.newTasks
   }
 }
-const mapDispatch = (dispatch) => {
-  watchTaskAddedEvent(dispatch)
-  watchTaskRemovedEvent(dispatch)
+const mapDispatch = (dispatch, ownProps) => {
+  watchTaskAddedEvent(ownProps.board, dispatch)
+  watchTaskRemovedEvent(ownProps.board, dispatch)
   return {
     removeTask(id) {
       removeTaskThunk(id)

@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import firebase from '../../firebase'
 import { Form, Button } from 'semantic-ui-react'
 import { addBoardThunk, watchBoardAddEvent, initBoardsThunk, setBoard } from '../store'
+import history from '../history'
 
 export class Home extends Component {
 
@@ -20,7 +21,7 @@ export class Home extends Component {
           </Form.Group>
           <Button type='submit'>Create New Board</Button>
         </Form>
-        {this.props.userBoards.map(board => <h1 onClick={() => this.props.setClick(board)} key={board.tag}>{board.name}</h1>)}
+        {this.props.userBoards.map(board => <Button onClick={() => this.props.setClick(board.tag)} key={board.tag}>{board.name}</Button>)}
       </div>
     )
   }
@@ -43,6 +44,7 @@ const mapDispatch = (dispatch) => {
     },
     setClick(board){
       dispatch(setBoard(board))
+      history.push('/board')
     }
   }
 }
