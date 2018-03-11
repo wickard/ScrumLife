@@ -10,9 +10,9 @@ const mapProps = (state) => {
     tasks: state.inProgress
   }
 }
-const mapDispatch = (dispatch) => {
-  watchProgressTaskAddedEvent(dispatch)
-  watchProgressTaskRemovedEvent(dispatch)
+const mapDispatch = (dispatch, ownProps) => {
+  watchProgressTaskAddedEvent(ownProps.board, dispatch)
+  watchProgressTaskRemovedEvent(ownProps.board, dispatch)
   return {
     removeTask(task) {
       removeProgressTaskThunk(task)

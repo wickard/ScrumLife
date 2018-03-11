@@ -29,18 +29,18 @@ export default function (state = [], action) {
 }
 
 
-export function addDoneTaskThunk(name) {
+export function addDoneTaskThunk(board, name) {
     //find the id of the thing your about to push into firebase, and set it
     const id = firebase.ref().child('doneTask').push().key
-    firebase.ref(`/joshboard/doneTask/${id}`).set({
+    firebase.ref(`/${board}/doneTask/${id}`).set({
       name, id
     })
 }
 
-export function initDoneTasksThunk() {
+export function initDoneTasksThunk(board) {
   return dispatch => {
     const tasks = [];
-    firebase.ref(`/joshboard/doneTask`).once('value', snap => {
+    firebase.ref(`/${board}/doneTask`).once('value', snap => {
       snap.forEach(data => {
         let task = data.val();
         tasks.push(task)
@@ -50,19 +50,19 @@ export function initDoneTasksThunk() {
   }
 }
 
-export function watchDoneTaskAddedEvent(dispatch) {
-  firebase.ref('/joshboard/doneTask').on('child_added', (snap) => {
+export function watchDoneTaskAddedEvent(board, dispatch) {
+  firebase.ref(`/${board}/doneTask`).on('child_added', (snap) => {
     dispatch(addDoneTask(snap.val()));
   });
 }
 
-export function removeDoneTaskThunk(id) {
-    const tasks = firebase.ref('/joshboard/doneTask')
+export function removeDoneTaskThunk(board, id) {
+    const tasks = firebase.ref(`/${board}/doneTask`)
     tasks.child(id).remove();
 }
 
-export function watchDoneTaskRemovedEvent(dispatch) {
-  firebase.ref('/joshboard/doneTask').on('child_removed', (snap) => {
+export function watchDoneTaskRemovedEvent(board, dispatch) {
+  firebase.ref(`/${board}/doneTask`).on('child_removed', (snap) => {
     const task = snap.val()
     dispatch(removeDoneTask(task));
   });

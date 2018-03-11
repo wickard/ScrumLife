@@ -6,27 +6,28 @@ import InProgressTaskColumn from './InProgressTaskColumn'
 import CompleteTaskColumn from './CompleteTaskColumn'
 import AddTaskModal from './addTask'
 import { addBoardThunk, addTaskThunk, initNewTasksThunk, initDoneTasksThunk, initProgressTasksThunk } from '../store'
+import drake from '../drake'
 /**
  * COMPONENT
  */
 export class UserHome extends Component {
   componentDidMount() {
-    this.props.onGetTasks();
+    this.props.onGetTasks(this.props.board);
   }
   render() {
 
     return (
       <div>
-        <AddTaskModal submitHandler={this.props.submitTask} open={false} />
+        <AddTaskModal board={this.props.board} submitHandler={this.props.submitTask} open={false} />
         <div className="flex" id="home">
           <div className="Column"> <h1>Not Started</h1> <hr width="70%" />
-            <NewTaskColumn />
+            <NewTaskColumn board={this.props.board} />
           </div>
           <div className="Column"> <h1>In Progress</h1> <hr width="70%" />
-          <InProgressTaskColumn />
+          <InProgressTaskColumn board={this.props.board} />
           </div>
           <div className="Column"> <h1>Done</h1> <hr width="70%" />
-          <CompleteTaskColumn />
+          <CompleteTaskColumn board={this.props.board} />
           </div>
         </div>
       </div>
@@ -39,6 +40,7 @@ export class UserHome extends Component {
  * CONTAINER
  */
 const mapProps = (state) => ({
+  board: state.board,
   newTasks: state.newTasks,
   progressTasks: state.progressTasks,
   doneTasks: state.doneTasks
@@ -48,13 +50,13 @@ const mapDispatch = (dispatch) => {
     submitHandler(name) {
       dispatch(addBoardThunk(name))
     },
-    submitTask(name){
-      addTaskThunk(name)
+    submitTask(board, name){
+      addTaskThunk(board, name)
     },
-    onGetTasks(){
-      dispatch(initNewTasksThunk())
-      dispatch(initDoneTasksThunk())
-      dispatch(initProgressTasksThunk())
+    onGetTasks(board){
+      dispatch(initNewTasksThunk(board))
+      dispatch(initDoneTasksThunk(board))
+      dispatch(initProgressTasksThunk(board))
     }
   }
 }

@@ -19,35 +19,36 @@ ReactDOM.render(
 )
 
 
-const removeCard = (source, elementId) => {
+const removeCard = (source, elementId, board) => {
   if (source === 'New-Task') {
-    removeTaskThunk(elementId)
+    removeTaskThunk(board, elementId)
   }
   if (source === 'Progress-Task') {
-    removeProgressTaskThunk(elementId)
+    removeProgressTaskThunk(board, elementId)
   }
   if (source === 'Complete-Task') {
-    removeDoneTaskThunk(elementId)
+    removeDoneTaskThunk(board, elementId)
   }
 }
 
-
 drake.on('drop', (el, target, source) => {
   if (!target) return
+  const state = store.getState()
+  let board = state.board
   switch (target.id){
     case 'New-Task':
-      addTaskThunk(el.getAttribute('task'))
-      removeCard(source.id, el.id)
+      addTaskThunk(board, el.getAttribute('task'))
+      removeCard(source.id, el.id, board)
       el.remove()
       break
     case 'Progress-Task':
-      addProgressTaskThunk(el.getAttribute('task'))
-      removeCard(source.id, el.id)
+      addProgressTaskThunk(board, el.getAttribute('task'))
+      removeCard(source.id, el.id, board)
       el.remove()
       break
     case 'Complete-Task':
-      addDoneTaskThunk(el.getAttribute('task'))
-      removeCard(source.id, el.id)
+      addDoneTaskThunk(board, el.getAttribute('task'))
+      removeCard(source.id, el.id, board)
       el.remove()
       break
     default:
